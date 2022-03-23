@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:image_search/Photo.dart';
-import 'package:image_search/ui/data/api.dart';
+import 'package:image_search/ui/data/pixabay_api.dart';
 import 'package:image_search/ui/data/photo_provider.dart';
 import 'package:image_search/ui/widget/photo_widget.dart';
 import 'package:http/http.dart' as http;
@@ -25,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final photoProvider = PhotoProvider.of(context);
+    final viewModel = PhotoProvider.of(context)?.viewModel;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -48,14 +48,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 suffixIcon: IconButton(
                     onPressed: () async {
-                      photoProvider?.fetch(_controller.text);
+                      viewModel?.fetch(_controller.text);
                     },
                     icon: const Icon(Icons.search)),
               ),
             ),
           ),
           StreamBuilder<Object>(
-            stream: photoProvider?.photoStream,
+            stream: viewModel?.photoStream,
             builder: (context, snapshot) {
               if(!snapshot.hasData){
                 return const CircularProgressIndicator();
